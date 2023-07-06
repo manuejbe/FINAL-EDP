@@ -8,24 +8,28 @@ def agregarRouterARuta(ruta: Ruta):
     ruta.agregarRouter(router)
     
 def activarRouter(ruta: Ruta):
-    nombreRouter=input("Ingrese el numero del router que desea activar o Z para volver al menu: ")
-    if nombreRouter == "Z":
+    mensaje="Ingrese el numero del router que desea activar o -1 para volver al menu: "
+    numeroRouter=validarIngresoNumerico(mensaje)
+    if numeroRouter == -1:
         return False
-    while not verificarNumeroRouter(nombreRouter, ruta):
-        nombreRouter=input("Router inexistente. Ingrese nuevamente el numero del router que desea activar o Z para volver al menu: ")
-        if nombreRouter == "Z":
+    while not verificarNumeroRouter(numeroRouter, ruta):
+        mensaje="Router inexistente. Ingrese nuevamente el numero del router que desea activar o -1 para volver al menu: "
+        numeroRouter=validarIngresoNumerico(mensaje)
+        if numeroRouter == -1:
             return False
-    ruta.routers[nombreRouter-1].activar()
+    ruta.routers[numeroRouter-1].activar()
 
 def desactivarRouter(ruta: Ruta):
-    nombreRouter=input("Ingrese el numero del router que desea desactivar o Z para volver al menu: ")
-    if nombreRouter == "Z":
+    mensaje="Ingrese el numero del router que desea desactivar o -1 para volver al menu: "
+    numeroRouter=validarIngresoNumerico(mensaje)
+    if numeroRouter == -1:
         return False
-    while not verificarNumeroRouter(nombreRouter, ruta):
-        nombreRouter=input("Router inexistente. Ingrese nuevamente el numero del router que desea desactivar o Z para volver al menu: ")
-        if nombreRouter == "Z":
+    while not verificarNumeroRouter(numeroRouter, ruta):
+        mensaje="Router inexistente. Ingrese nuevamente el numero del router que desea desactivar o -1 para volver al menu: "
+        numeroRouter=validarIngresoNumerico(mensaje)
+        if numeroRouter == -1:
             return False
-    ruta.routers[nombreRouter-1].desactivar()
+    ruta.routers[numeroRouter-1].desactivar()
 
 def mostrarRuta(ruta: Ruta):
     if len(ruta.routers) == 0:
