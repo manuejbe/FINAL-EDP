@@ -1,5 +1,8 @@
 from auxiliares import *
 from clases.Ruta import *
+from clases.Router import *
+from clases.RoutingSim import *
+
 
 def agregarRouterARuta(ruta: Ruta):
     cantRouters=len(ruta.routers)
@@ -38,3 +41,9 @@ def mostrarRuta(ruta: Ruta):
         print("La ruta tiene los siguientes routers:")
         for router in ruta.routers:
             print(router)
+
+def simularRuta(ruta: Ruta):
+    tiempoSimulacion=validarIngresoNumerico("Ingrese el tiempo de simulacion en segundos: ")
+    while tiempoSimulacion < 0:
+        tiempoSimulacion=validarIngresoNumerico("Ingrese un tiempo de simulacion valido: ")
+    routingSim=RoutingSim(tiempoSimulacion)

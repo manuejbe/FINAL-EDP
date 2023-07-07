@@ -3,7 +3,7 @@ from clases.Router import *
 from opcionesMenu import *
 import random
 
-def simularRuta(ruta: Ruta):
+def simularAregadoRouters(ruta: Ruta):
     cantidadRouters = random.randint(4,10)
     for i in range(cantidadRouters):
         nombreRouter = "router_" + str(i)

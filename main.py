@@ -9,9 +9,10 @@ def menu():
     print("2. Activar router")
     print("3. Desactivar router")
     print("4. Mostrar ruta")
-    print("5. Salir")
+    print("5. Simular ruta")
+    print("6. Salir")
     opcion = validarIngresoNumerico("Ingrese una opcion: ")
-    while opcion not in range(1,6):
+    while opcion not in range(1,7):
         opcion = validarIngresoNumerico("Ingrese una opcion valida: ")
     if opcion == 1:
         agregarRouterARuta(ruta1)
@@ -22,6 +23,8 @@ def menu():
     elif opcion == 4:
         mostrarRuta(ruta1)
     elif opcion == 5:
+        simularRuta(ruta1)
+    elif opcion == 6:
         quit()
     menu()
 
