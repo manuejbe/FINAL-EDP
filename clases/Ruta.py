@@ -1,14 +1,33 @@
 import random
-
+import time
 from clases.Router import Router
 
 class Ruta:
-    def __init__(self, nombreRuta):
+    def _init_(self, nombreRuta):
         self.nombreRuta = nombreRuta
-        self.routers = []
+        self.head = None
 
     def agregarRouter(self,Router: Router):
-        self.routers.append(Router)
+        if self.head == None:
+            self.head = Router
+        else:
+            self.head.siguiente = Router
+
+    def accederNodo(self, numeroRouter):
+        nodoActual = self.head
+        while nodoActual != None:
+            if nodoActual.numero == numeroRouter:
+                return nodoActual
+            nodoActual = nodoActual.siguiente
+        return None
+    
+    def moverPaquete(self, numeroRouter):
+        routerOrigen = self.accederNodo(numeroRouter)
+        for i in range(routerOrigen.paquete.origen,routerOrigen.paquete.destino):
+            routerActual = self.accederNodo(i)
+            if self.accederNodo(i).status == True:
+                time.sleep(0.1)
+
 
     def inicializarRutaRandom (self):
         cantidadRouters = random.randint(4,10)
@@ -17,8 +36,10 @@ class Ruta:
             router = Router(nombreRouter)
             self.agregarRouter(router)
         for router in self.routers:
-            activar = random.randint(0,1)
+            activar = random.randint(0,2)
             if activar == 1:
                 router.activar()
-            else:
+            if activar == 2:
                 router.desactivar()
+            if activar == 3:
+                router.averiar()

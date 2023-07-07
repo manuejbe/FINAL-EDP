@@ -2,8 +2,8 @@ from auxiliares import *
 from clases.Ruta import *
 from clases.Router import *
 from clases.RoutingSim import *
-from clases.Paquete import Paquete  
-
+from clases.Paquete import Paquete
+#importar clase paquete
 
 def agregarRouterARuta(ruta: Ruta):
     cantRouters=len(ruta.routers)
@@ -47,7 +47,6 @@ def simularRuta(ruta: Ruta):
     tiempoSimulacion=verificarNumeroInput("Ingrese el tiempo de simulacion en segundos: ")
     while tiempoSimulacion < 0:
         tiempoSimulacion=verificarNumeroInput("Ingrese un tiempo de simulacion valido: ")
-    
     cantidadPaquetes=verificarNumeroInput("Ingrese la cantidad de paquetes a enviar: ")
     while cantidadPaquetes < 0:
         cantidadPaquetes=verificarNumeroInput("Ingrese una cantidad de paquetes valida: ")
@@ -58,4 +57,4 @@ def simularRuta(ruta: Ruta):
         contenido=input("Ingrese el contenido del paquete: ")
         paquete=Paquete(origen, destino, contenido)
         paquetes.append(paquete)
-    routingSim=RoutingSim(tiempoSimulacion, paquetes)
+    routingSim=RoutingSim(tiempoSimulacion, ruta, paquetes)
