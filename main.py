@@ -2,7 +2,6 @@ from clases.Ruta import *
 from clases.Router import *
 from opcionesMenu import *
 from auxiliares import *
-from simulacion import *
 
 def menu():
     print("1. Agregar router a ruta")
@@ -11,9 +10,9 @@ def menu():
     print("4. Mostrar ruta")
     print("5. Simular ruta")
     print("6. Salir")
-    opcion = validarIngresoNumerico("Ingrese una opcion: ")
+    opcion = verificarNumeroInput("Ingrese una opcion: ")
     while opcion not in range(1,7):
-        opcion = validarIngresoNumerico("Ingrese una opcion valida: ")
+        opcion = verificarNumeroInput("Ingrese una opcion valida: ")
     if opcion == 1:
         agregarRouterARuta(ruta1)
     elif opcion == 2:

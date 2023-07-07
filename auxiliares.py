@@ -6,8 +6,15 @@ def verificarNumeroRouter(numeroRouter, ruta: Ruta):
     else:
         return False
     
-def validarIngresoNumerico(mensaje):
-    numero = input(mensaje)
-    while not numero.isnumeric():
-        numero = input("Ingrese un numero valido: ")
-    return numero
+def verificarNumeroInput(texto1):
+    while True:
+        varStr = input(texto1)
+        try:
+            varInt = int(varStr)
+            if varInt!=None:
+                break
+            else:
+                print("Ingreso invalido. Por favor, inténtelo de nuevo.")
+        except ValueError:
+            print("Ingreso invalido. Por favor, inténtelo de nuevo.")
+    return varInt
