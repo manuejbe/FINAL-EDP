@@ -47,12 +47,15 @@ def simularRuta(ruta: Ruta):
     tiempoSimulacion=verificarNumeroInput("Ingrese el tiempo de simulacion en segundos: ")
     while tiempoSimulacion < 0:
         tiempoSimulacion=verificarNumeroInput("Ingrese un tiempo de simulacion valido: ")
-    routingSim=RoutingSim(tiempoSimulacion, contenido)
+    
     cantidadPaquetes=verificarNumeroInput("Ingrese la cantidad de paquetes a enviar: ")
     while cantidadPaquetes < 0:
         cantidadPaquetes=verificarNumeroInput("Ingrese una cantidad de paquetes valida: ")
+    paquetes=[]
     for i in range(cantidadPaquetes):
         origen=verificarNumeroInput("Ingrese el numero del router origen: ")
         destino=verificarNumeroInput("Ingrese el numero del router destino: ")
         contenido=input("Ingrese el contenido del paquete: ")
         paquete=Paquete(origen, destino, contenido)
+        paquetes.append(paquete)
+    routingSim=RoutingSim(tiempoSimulacion, paquetes)
