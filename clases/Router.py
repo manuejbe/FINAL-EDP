@@ -1,5 +1,9 @@
 from random import *
 import time
+import datetime
+import csv
+import auxiliares as aux
+import asyncio
 
 class Router:
     def __init__(self, posicion, estado="ACTIVO"):
@@ -12,39 +16,45 @@ class Router:
 
     def activar(self):
         self.estado = "ACTIVO"
-        print(f"El router en la posición {self.posicion} ha sido activado.")
+        aux.escribirEnLog("ACTIVADO", self.posicion)
 
     def desactivar(self):
         self.estado = "INACTIVO"
-        print(f"El router en la posición {self.posicion} ha sido desactivado.")
+        aux.escribirEnLog("INACTIVO", self.posicion)
+
+
 
     def averiar(self):
         self.estado = "AVERIADO"
-        print(f"El router en la posición {self.posicion} ha sido averiado.")
 
-    def recibir_paquete(self, paquete):
+    async def recibir_paquete(self, paquete):
         self.paquete = paquete
-        time.sleep(0.1)
-        self.enviar_paquete_siguiente()
+        print(f"El paquete {self.paquete} llegó al router {self.posicion}")
+        await asyncio.sleep(0.1)
+        await self.enviar_paquete_siguiente()
 
-    def enviar_paquete_siguiente(self):
+    async def enviar_paquete_siguiente(self):
         routerActual = self
+        yaPaso = False
         for i in range(self.paquete.destino-self.posicion):
-            if routerActual.siguiente != None:
-                match routerActual.estadoSiguiente():
-                    case "ACTIVO":
-                        routerActual.siguiente.recibirPaquete(self.paquete)
-                    case "INACTIVO":
-                        routerActual = routerActual.siguiente
-                    case "AVERIADO":
-                        routerActual = routerActual.siguiente
-                        routerActual.reset()
-            else:
-                print("El paquete llegó a destino")
+            if (not yaPaso):
+                if routerActual.siguiente != None:
+                    match routerActual.estadoSiguiente():
+                        case "ACTIVO":
+                            await routerActual.siguiente.recibir_paquete(self.paquete)
+                            yaPaso = True
+                        case "INACTIVO":
+                            routerActual = routerActual.siguiente
+                        case "AVERIADO":
+                            routerActual = routerActual.siguiente
+                            asyncio.create_task(routerActual.reset())
+                else:
+                    print("El paquete llegó a destino")
                         
     async def reset(self):
-        await time.sleep(randint(5,10))
-        self.status = "ACTIVO"
+        aux.escribirEnLog("EN_RESET", self.posicion)
+        await asyncio.sleep(randint(5,10))
+        self.activar()
 
     def estadoSiguiente(self):
         e = self.siguiente.estado
@@ -55,3 +65,6 @@ class Router:
             self.tiempo_latencia -= 1
         else:
             self.enviar_paquete_siguiente()
+
+    def __str__(self):
+        return f"Router {self.posicion}: {self.estado}"

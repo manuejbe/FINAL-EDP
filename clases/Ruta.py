@@ -19,9 +19,9 @@ class Ruta:
                 current = current.siguiente
             current.siguiente = router
         self.len += 1
-        with open('system_log.csv', 'w', newline='') as csvfile:
+        with open('system_log.csv', 'a', newline='') as csvfile:
             writer = csv.writer(csvfile)
-            writer.writerow(["ROUTER_"+router.posicion, datetime.now(), "AGREGADO"])
+            writer.writerow(["ROUTER_"+str(router.posicion), datetime.now(), "AGREGADO"])
 
     def accederNodo(self, numeroRouter):
         nodoActual = self.head
@@ -42,26 +42,28 @@ class Ruta:
     def inicializarRutaRandom (self):
         cantidadRouters = random.randint(4,10)
         for i in range(cantidadRouters):
-            nombreRouter = "router_" + str(i)
-            router = Router(nombreRouter)
+            router = Router(i+1)
             self.agregarRouter(router)
             
-        for router in self.routers:
-            activar = random.randint(0,2)
+        router = self.head
+        while router != None:
+            activar = random.randint(1,3)
             if activar == 1:
                 router.activar()
             if activar == 2:
                 router.desactivar()
             if activar == 3:
                 router.averiar()
+            router = router.siguiente
 
     def __str__(self):
         router = self.head
         if self.len == 0:
             print("No hay routers en la ruta")
         else:
-            while router.siguiente != None:
+            while router != None:
                 print(router)
                 router = router.siguiente
+        return ""
             
         

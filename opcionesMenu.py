@@ -3,12 +3,10 @@ from clases.Ruta import *
 from clases.Router import *
 from clases.RoutingSim import *
 from clases.Paquete import Paquete
-#importar clase paquete
 
 def agregarRouterARuta(ruta: Ruta):
-    cantRouters=len(ruta.routers)
-    nombreRouter="router_"+str(cantRouters+1)
-    router=Router(nombreRouter)
+    cantRouters=ruta.len
+    router=Router(cantRouters+1)
     ruta.agregarRouter(router)
     
 def activarRouter(ruta: Ruta):
@@ -21,7 +19,10 @@ def activarRouter(ruta: Ruta):
         numeroRouter=verificarNumeroInput(mensaje)
         if numeroRouter == -1:
             return False
-    ruta.routers[numeroRouter-1].activar()
+    router = ruta.head
+    for i in range(numeroRouter):
+        router = router.siguiente
+    router = router.activar()
 
 def desactivarRouter(ruta: Ruta):
     mensaje="Ingrese el numero del router que desea desactivar o -1 para volver al menu: "
@@ -33,12 +34,15 @@ def desactivarRouter(ruta: Ruta):
         numeroRouter=verificarNumeroInput(mensaje)
         if numeroRouter == -1:
             return False
-    ruta.routers[numeroRouter-1].desactivar()
+    router = ruta.head
+    for i in range(numeroRouter):
+        router = router.siguiente
+    router = router.desactivar()
 
 def mostrarRuta(ruta: Ruta):
         print(ruta)
 
-def simularRuta(ruta: Ruta):
+async def simularRuta(ruta: Ruta):
     tiempoSimulacion=verificarNumeroInput("Ingrese el tiempo de simulacion en segundos: ")
     while tiempoSimulacion < 0:
         tiempoSimulacion=verificarNumeroInput("Ingrese un tiempo de simulacion valido: ")
@@ -53,4 +57,6 @@ def simularRuta(ruta: Ruta):
         contenido=input("Ingrese el contenido del paquete: ")
         paquete=Paquete(origen, destino, contenido)
         paquetes.append(paquete)
+
     routingSim=RoutingSim(tiempoSimulacion, ruta, paquetes)
+    await routingSim.simular()
