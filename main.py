@@ -28,6 +28,7 @@ async def menu():
                 mostrarRuta(ruta1)
             case 5:
                 await simularRuta(ruta1)
+                await asyncio.sleep(10)
             case 6:
                 termina=True
 

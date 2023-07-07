@@ -5,5 +5,9 @@ class RoutingSim:
         self.paquetes = paquetes
 
     async def simular(self):
+        nodo = self.ruta.head
         for p in self.paquetes:
-            await self.ruta.head.recibir_paquete(p)
+            while (nodo.posicion != p.origen):
+                nodo = nodo.siguiente
+            await nodo.recibir_paquete(p)
+            nodo = self.ruta.head
