@@ -1,5 +1,5 @@
 class Paquete:
-    def _init_(self, origen, destino, contenido):
+    def __init__(self, origen, destino, contenido):
         self.origen = origen
         self.destino = destino
         self.contenido = contenido

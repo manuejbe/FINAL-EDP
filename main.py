@@ -30,5 +30,5 @@ def menu():
 #ejecucion del programa principal
 nombreRuta="Ruta1"
 ruta1 = Ruta(nombreRuta)
-simularRuta(ruta1)
+ruta1.inicializarRutaRandom()
 menu()

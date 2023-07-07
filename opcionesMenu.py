@@ -36,12 +36,7 @@ def desactivarRouter(ruta: Ruta):
     ruta.routers[numeroRouter-1].desactivar()
 
 def mostrarRuta(ruta: Ruta):
-    if len(ruta.routers) == 0:
-        print("La ruta no tiene routers")
-    else:
-        print("La ruta tiene los siguientes routers:")
-        for router in ruta.routers:
-            print(router)
+        print(ruta)
 
 def simularRuta(ruta: Ruta):
     tiempoSimulacion=verificarNumeroInput("Ingrese el tiempo de simulacion en segundos: ")
@@ -52,6 +47,7 @@ def simularRuta(ruta: Ruta):
         cantidadPaquetes=verificarNumeroInput("Ingrese una cantidad de paquetes valida: ")
     paquetes=[]
     for i in range(cantidadPaquetes):
+        print(f"Paquete {i+1}:")
         origen=verificarNumeroInput("Ingrese el numero del router origen: ")
         destino=verificarNumeroInput("Ingrese el numero del router destino: ")
         contenido=input("Ingrese el contenido del paquete: ")

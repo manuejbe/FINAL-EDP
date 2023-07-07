@@ -1,17 +1,27 @@
 import random
 import time
 from clases.Router import Router
+import csv
+from datetime import datetime
 
 class Ruta:
-    def _init_(self, nombreRuta):
+    def __init__(self, nombreRuta):
         self.nombreRuta = nombreRuta
         self.head = None
+        self.len = 0 
 
-    def agregarRouter(self,Router: Router):
+    def agregarRouter(self, router: Router):
         if self.head == None:
-            self.head = Router
+            self.head = router
         else:
-            self.head.siguiente = Router
+            current = self.head
+            while current.siguiente:
+                current = current.siguiente
+            current.siguiente = router
+        self.len += 1
+        with open('system_log.csv', 'w', newline='') as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerow(["ROUTER_"+router.posicion, datetime.now(), "AGREGADO"])
 
     def accederNodo(self, numeroRouter):
         nodoActual = self.head
@@ -35,6 +45,7 @@ class Ruta:
             nombreRouter = "router_" + str(i)
             router = Router(nombreRouter)
             self.agregarRouter(router)
+            
         for router in self.routers:
             activar = random.randint(0,2)
             if activar == 1:
@@ -43,3 +54,14 @@ class Ruta:
                 router.desactivar()
             if activar == 3:
                 router.averiar()
+
+    def __str__(self):
+        router = self.head
+        if self.len == 0:
+            print("No hay routers en la ruta")
+        else:
+            while router.siguiente != None:
+                print(router)
+                router = router.siguiente
+            
+        

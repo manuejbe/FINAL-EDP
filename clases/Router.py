@@ -2,13 +2,13 @@ from random import *
 import time
 
 class Router:
-    def _init_(self, posicion, estado="ACTIVO"):
+    def __init__(self, posicion, estado="ACTIVO"):
         self.posicion = posicion
         self.estado = estado
-        self.tiempo_reset = random.randint(5, 10)
+        self.tiempo_reset = randint(5, 10)
         self.paquete = None
         self.tiempo_latencia = 0,1
-        self.siguiente_router = None
+        self.siguiente = None
 
     def activar(self):
         self.estado = "ACTIVO"
@@ -30,14 +30,14 @@ class Router:
     def enviar_paquete_siguiente(self):
         routerActual = self
         for i in range(self.paquete.destino-self.posicion):
-            if routerActual.siguiente_router != None:
+            if routerActual.siguiente != None:
                 match routerActual.estadoSiguiente():
                     case "ACTIVO":
-                        routerActual.siguiente_router.recibirPaquete(self.paquete)
+                        routerActual.siguiente.recibirPaquete(self.paquete)
                     case "INACTIVO":
-                        routerActual = routerActual.siguiente_router
+                        routerActual = routerActual.siguiente
                     case "AVERIADO":
-                        routerActual = routerActual.siguiente_router
+                        routerActual = routerActual.siguiente
                         routerActual.reset()
             else:
                 print("El paquete llegó a destino")
@@ -47,7 +47,7 @@ class Router:
         self.status = "ACTIVO"
 
     def estadoSiguiente(self):
-        e = self.siguiente_router.estado
+        e = self.siguiente.estado
         return e
             
     def tick(self):
