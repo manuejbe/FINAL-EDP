@@ -9,5 +9,8 @@ class RoutingSim:
         for p in self.paquetes:
             while (nodo.posicion != p.origen):
                 nodo = nodo.siguiente
-            await nodo.recibir_paquete(p)
+            if nodo.estado == "ACTIVO":
+                await nodo.recibir_paquete(p)
+            else:
+                print("No se envió porque no esta activo el nodo de origen")
             nodo = self.ruta.head

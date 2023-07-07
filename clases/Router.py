@@ -4,7 +4,8 @@ import datetime
 import csv
 import auxiliares as aux
 import asyncio
-
+##un router puede tener muchos paquetes, tiene que tener una lista de paquetes y que lo appendee
+##hay que hacer que se borre el paquete si no es el nodo de origen
 class Router:
     def __init__(self, posicion, estado="ACTIVO"):
         self.posicion = posicion
@@ -13,6 +14,8 @@ class Router:
         self.paquete = None
         self.tiempo_latencia = 0,1
         self.siguiente = None
+        self.enviados = 0
+        self.recibidos = 0
 
     def activar(self):
         self.estado = "ACTIVO"
@@ -34,6 +37,7 @@ class Router:
         await self.enviar_paquete_siguiente()
 
     async def enviar_paquete_siguiente(self):
+
         routerActual = self
         yaPaso = False
         for i in range(self.paquete.destino-self.posicion):
