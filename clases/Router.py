@@ -1,9 +1,10 @@
 from random import *
 import time
-import datetime
+from datetime import datetime
 import csv
 import auxiliares as aux
 import asyncio
+from clases.Cola import Cola
 ##un router puede tener muchos paquetes, tiene que tener una lista de paquetes y que lo appendee
 ##hay que hacer que se borre el paquete si no es el nodo de origen
 class Router:
@@ -14,8 +15,10 @@ class Router:
         self.paquete = None
         self.tiempo_latencia = 0,1
         self.siguiente = None
-        self.enviados = 0
-        self.recibidos = 0
+        self.paquetesRetrans = Cola() #paquetes que se retransmiten
+        self.paquetesOriginados = Cola() #paquetes que se originan en este router
+        self.paquetesDestinados = [] #paquetes que se quedan en este router
+        self.paquetesRecibidos = 0
 
     def activar(self):
         self.estado = "ACTIVO"
@@ -31,30 +34,48 @@ class Router:
         self.estado = "AVERIADO"
 
     async def recibir_paquete(self, paquete):
-        self.paquete = paquete
-        print(f"El paquete {self.paquete} llegó al router {self.posicion}")
-        await asyncio.sleep(0.1)
-        await self.enviar_paquete_siguiente()
+        if paquete.destino != self.posicion and paquete.origen != self.posicion:
+            print(f"El paquete ({paquete.contenido}) llegó al router {self.posicion}", datetime.now())
+            self.paquetesRetrans.encolar(paquete)
 
-    async def enviar_paquete_siguiente(self):
+        if paquete.origen == self.posicion:
+            print(f"El paquete ({paquete.contenido}) se originó en el router {self.posicion}", datetime.now())
+            self.paquetesOriginados.encolar(paquete)
 
+        if paquete.destino == self.posicion:
+            print(f"El paquete ({paquete.contenido}) llegó a su destino", datetime.now())
+            self.paquetesDestinados.append(paquete)
+        
+        while not self.paquetesRetrans.esta_vacia():
+            for i in range(self.paquetesRetrans.tamano()):
+                if (not self.paquetesRetrans.esta_vacia()):
+                    await asyncio.sleep(0.1)
+                    await self.enviar_paquete_siguiente(self.paquetesRetrans.desencolar())
+        for i in range(self.paquetesOriginados.tamano()):
+                await asyncio.sleep(0.1)
+                await self.enviar_paquete_siguiente(self.paquetesOriginados.desencolar())
+                
+
+
+        
+
+    async def enviar_paquete_siguiente(self, paquete):
+        
         routerActual = self
         yaPaso = False
-        for i in range(self.paquete.destino-self.posicion):
+        for i in range(paquete.destino-self.posicion):
             if (not yaPaso):
                 if routerActual.siguiente != None:
                     match routerActual.estadoSiguiente():
                         case "ACTIVO":
-                            await routerActual.siguiente.recibir_paquete(self.paquete)
+                            await routerActual.siguiente.recibir_paquete(paquete)
                             yaPaso = True
                         case "INACTIVO":
                             routerActual = routerActual.siguiente
                         case "AVERIADO":
                             routerActual = routerActual.siguiente
                             asyncio.create_task(routerActual.reset())
-                else:
-                    print("El paquete llegó a destino")
-                        
+                     
     async def reset(self):
         aux.escribirEnLog("EN_RESET", self.posicion)
         await asyncio.sleep(randint(5,10))

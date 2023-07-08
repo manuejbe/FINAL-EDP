@@ -14,6 +14,13 @@ def escribirEnLog(accion, numeroRouter):
         writer = csv.writer(csvfile)
         writer.writerow(["ROUTER_"+str(numeroRouter), datetime.now(), accion])
     
+#verifica que el numero de router ingresado por el usuario sea menor a la cantidad de routers en la ruta
+def validarRouterDestinoMenorATotalRouters(destino, ruta):
+    if destino in range (1, ruta.len):
+        return True
+    else:
+        return False
+    
 #verifica que el input ingresado por el usuario sea un numero
 def verificarNumeroInput(texto1):
     while True:

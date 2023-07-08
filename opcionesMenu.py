@@ -22,13 +22,7 @@ def activarRouter(ruta: Ruta):
         numeroRouter=verificarNumeroInput(mensaje)
         if numeroRouter == -1:
             return False
-    router = ruta.head
-    for i in range(numeroRouter):
-        if router.posicion == numeroRouter:
-            router=router
-        else:
-            router=router.siguiente
-    router = router.activar()
+    ruta.accederNodo(numeroRouter).activar()
 
 #funcion para desactivar un router
 def desactivarRouter(ruta: Ruta):
@@ -41,13 +35,7 @@ def desactivarRouter(ruta: Ruta):
         numeroRouter=verificarNumeroInput(mensaje)
         if numeroRouter == -1:
             return False
-    router = ruta.head
-    for i in range(numeroRouter):
-        if router.posicion == numeroRouter:
-            router=router
-        else:
-            router=router.siguiente
-    router = router.desactivar()
+    ruta.accederNodo(numeroRouter).desactivar()
 
 #funcion para mostrar la ruta
 def mostrarRuta(ruta: Ruta):
@@ -65,10 +53,15 @@ async def simularRuta(ruta: Ruta):
     for i in range(cantidadPaquetes):
         print(f"Paquete {i+1}:")
         origen=verificarNumeroInput("Ingrese el numero del router origen: ")
+        while origen < 0 or origen > ruta.len:
+            origen=verificarNumeroInput("Ingrese un router origen valido: ")
         destino=verificarNumeroInput("Ingrese el numero del router destino: ")
+        while destino < 0 or destino > ruta.len or destino < origen:
+            destino=verificarNumeroInput("Ingrese un router destino valido: ")
         contenido=input("Ingrese el contenido del paquete: ")
         paquete=Paquete(origen, destino, contenido)
         paquetes.append(paquete)
 
     routingSim=RoutingSim(tiempoSimulacion, ruta, paquetes)
+    
     await routingSim.simular()

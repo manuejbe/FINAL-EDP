@@ -32,30 +32,21 @@ class Ruta:
                 return nodoActual
             nodoActual = nodoActual.siguiente
         return None
-    
-
-    def moverPaquete(self, numeroRouter):
-        routerOrigen = self.accederNodo(numeroRouter)
-        for i in range(routerOrigen.paquete.origen,routerOrigen.paquete.destino):
-            routerActual = self.accederNodo(i)
-            if self.accederNodo(i).status == True:
-                time.sleep(0.1)
 
 
     def inicializarRutaRandom (self):
-        cantidadRouters = random.randint(4,10)
+        cantidadRouters = random.randint(10,20)
         for i in range(cantidadRouters):
             router = Router(i+1)
             self.agregarRouter(router)
-            
         router = self.head
         while router != None:
-            activar = random.randint(1,3)
-            if activar == 1:
+            activar = random.randint(1,10)
+            if activar in range(1,7):
                 router.activar()
-            if activar == 2:
+            if activar in (7,8):
                 router.desactivar()
-            if activar == 3:
+            if activar in (9,10):
                 router.averiar()
             router = router.siguiente
 
