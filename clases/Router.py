@@ -47,20 +47,17 @@ class Router:
             self.paquetesDestinados.append(paquete)
         
         while not self.paquetesRetrans.esta_vacia():
-            for i in range(self.paquetesRetrans.tamano()):
-                if (not self.paquetesRetrans.esta_vacia()):
-                    await asyncio.sleep(0.1)
-                    await self.enviar_paquete_siguiente(self.paquetesRetrans.desencolar())
+            if (not self.paquetesRetrans.esta_vacia()):
+                await self.enviar_paquete_siguiente(self.paquetesRetrans.desencolar())
         for i in range(self.paquetesOriginados.tamano()):
-                await asyncio.sleep(0.1)
-                await self.enviar_paquete_siguiente(self.paquetesOriginados.desencolar())
+            await self.enviar_paquete_siguiente(self.paquetesOriginados.desencolar())
                 
 
 
         
 
     async def enviar_paquete_siguiente(self, paquete):
-        
+        await asyncio.sleep(0.1)
         routerActual = self
         yaPaso = False
         for i in range(paquete.destino-self.posicion):
