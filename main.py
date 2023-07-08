@@ -2,6 +2,7 @@ from clases.Ruta import *
 from clases.Router import *
 from opcionesMenu import *
 from auxiliares import *
+from grafico import *
 import tracemalloc
 
 tracemalloc.start()
@@ -42,5 +43,9 @@ with open('system_log.csv', 'w') as f:
     f.close()
 #creacion de routers y agregado a la ruta (de forma aleatoria y en estados aleatorios)
 ruta1.inicializarRutaRandom()
+#creacion de los txts para cada router
+ruta1.crearTxts()
 #ejecucion del menu
 asyncio.run(menu())
+#creacion del grafico
+graficar(ruta1)

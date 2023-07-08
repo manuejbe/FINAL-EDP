@@ -5,6 +5,7 @@ import csv
 import auxiliares as aux
 import asyncio
 from clases.Cola import Cola
+import os
 ##un router puede tener muchos paquetes, tiene que tener una lista de paquetes y que lo appendee
 ##hay que hacer que se borre el paquete si no es el nodo de origen
 class Router:
@@ -19,6 +20,7 @@ class Router:
         self.paquetesOriginados = Cola() #paquetes que se originan en este router
         self.paquetesDestinados = [] #paquetes que se quedan en este router
         self.paquetesRecibidos = 0
+        self.contPaquetesOriginados = 0
 
     def activar(self):
         self.estado = "ACTIVO"
@@ -28,12 +30,11 @@ class Router:
         self.estado = "INACTIVO"
         aux.escribirEnLog("INACTIVO", self.posicion)
 
-
-
     def averiar(self):
         self.estado = "AVERIADO"
 
     async def recibir_paquete(self, paquete):
+        self.paquetesRecibidos += 1
         if paquete.destino != self.posicion and paquete.origen != self.posicion:
             print(f"El paquete ({paquete.contenido}) llegó al router {self.posicion}", datetime.now())
             self.paquetesRetrans.encolar(paquete)
@@ -45,17 +46,25 @@ class Router:
         if paquete.destino == self.posicion:
             print(f"El paquete ({paquete.contenido}) llegó a su destino", datetime.now())
             self.paquetesDestinados.append(paquete)
+            nombreArchivo="router_"+str(self.posicion)+".txt"
+            carpeta = 'archivosTxts'
+            rutaArchivo = os.path.join(carpeta, nombreArchivo)
+            with open(rutaArchivo, 'a') as file:
+                file.write("Origen: ROUTER_"+str(paquete.origen))
+                file.write('\n')
+                file.write(paquete.contenido)
+                file.write('\n')
+                
+
         
         while not self.paquetesRetrans.esta_vacia():
             if (not self.paquetesRetrans.esta_vacia()):
                 await self.enviar_paquete_siguiente(self.paquetesRetrans.desencolar())
         for i in range(self.paquetesOriginados.tamano()):
+            self.contPaquetesOriginados += 1
+            self.paquetesRecibidos -= 1
             await self.enviar_paquete_siguiente(self.paquetesOriginados.desencolar())
                 
-
-
-        
-
     async def enviar_paquete_siguiente(self, paquete):
         await asyncio.sleep(0.1)
         routerActual = self
