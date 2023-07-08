@@ -21,9 +21,9 @@ async def menu():
             case 1:
                 agregarRouterARuta(ruta1)
             case 2:
-                activarRouter()
+                activarRouter(ruta1)
             case 3:
-                desactivarRouter()
+                desactivarRouter(ruta1)
             case 4:
                 mostrarRuta(ruta1)
             case 5:
@@ -33,11 +33,14 @@ async def menu():
                 termina=True
 
 
-#ejecucion del programa principal
+#creacion de la ruta utilizando la clase Ruta
 nombreRuta="Ruta1"
 ruta1 = Ruta(nombreRuta)
+#creacion del archivo system_log.csv para despues poder appendear la data
 with open('system_log.csv', 'w') as f:
     f.write("")
     f.close()
+#creacion de routers y agregado a la ruta (de forma aleatoria y en estados aleatorios)
 ruta1.inicializarRutaRandom()
+#ejecucion del menu
 asyncio.run(menu())

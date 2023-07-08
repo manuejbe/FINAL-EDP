@@ -4,11 +4,14 @@ from clases.Router import *
 from clases.RoutingSim import *
 from clases.Paquete import Paquete
 
+
+#funcion para agregar un router a la ruta
 def agregarRouterARuta(ruta: Ruta):
     cantRouters=ruta.len
     router=Router(cantRouters+1)
     ruta.agregarRouter(router)
-    
+
+#funcion para activar un router
 def activarRouter(ruta: Ruta):
     mensaje="Ingrese el numero del router que desea activar o -1 para volver al menu: "
     numeroRouter=verificarNumeroInput(mensaje)
@@ -21,9 +24,13 @@ def activarRouter(ruta: Ruta):
             return False
     router = ruta.head
     for i in range(numeroRouter):
-        router = router.siguiente
+        if router.posicion == numeroRouter:
+            router=router
+        else:
+            router=router.siguiente
     router = router.activar()
 
+#funcion para desactivar un router
 def desactivarRouter(ruta: Ruta):
     mensaje="Ingrese el numero del router que desea desactivar o -1 para volver al menu: "
     numeroRouter=verificarNumeroInput(mensaje)
@@ -36,12 +43,17 @@ def desactivarRouter(ruta: Ruta):
             return False
     router = ruta.head
     for i in range(numeroRouter):
-        router = router.siguiente
+        if router.posicion == numeroRouter:
+            router=router
+        else:
+            router=router.siguiente
     router = router.desactivar()
 
+#funcion para mostrar la ruta
 def mostrarRuta(ruta: Ruta):
         print(ruta)
 
+#funcion para simular la ruta (se le pide al usuario un tiempo de simulacion y una cantidad de paquetes a enviar con sus respectivos datos)
 async def simularRuta(ruta: Ruta):
     tiempoSimulacion=verificarNumeroInput("Ingrese el tiempo de simulacion en segundos: ")
     while tiempoSimulacion < 0:

@@ -10,6 +10,7 @@ class Ruta:
         self.head = None
         self.len = 0 
 
+
     def agregarRouter(self, router: Router):
         if self.head == None:
             self.head = router
@@ -23,14 +24,16 @@ class Ruta:
             writer = csv.writer(csvfile)
             writer.writerow(["ROUTER_"+str(router.posicion), datetime.now(), "AGREGADO"])
 
+
     def accederNodo(self, numeroRouter):
         nodoActual = self.head
         while nodoActual != None:
-            if nodoActual.numero == numeroRouter:
+            if nodoActual.posicion == numeroRouter:
                 return nodoActual
             nodoActual = nodoActual.siguiente
         return None
     
+
     def moverPaquete(self, numeroRouter):
         routerOrigen = self.accederNodo(numeroRouter)
         for i in range(routerOrigen.paquete.origen,routerOrigen.paquete.destino):
