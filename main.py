@@ -4,6 +4,8 @@ from opcionesMenu import *
 from auxiliares import *
 from grafico import *
 import tracemalloc
+from tasa import *
+import asyncio
 
 tracemalloc.start()
 async def menu():
@@ -28,8 +30,9 @@ async def menu():
             case 4:
                 mostrarRuta(ruta1)
             case 5:
-                await simularRuta(ruta1)
-                await asyncio.sleep(10)
+                routingSim = await simularRuta(ruta1)
+                
+                tasaPaquetes(routingSim)
             case 6:
                 termina=True
 

@@ -66,7 +66,10 @@ class Router:
             await self.enviar_paquete_siguiente(self.paquetesOriginados.desencolar())
                 
     async def enviar_paquete_siguiente(self, paquete):
-        await asyncio.sleep(0.1)
+        try:
+            await asyncio.sleep(0.1)
+        except asyncio.CancelledError:
+            return
         routerActual = self
         yaPaso = False
         for i in range(paquete.destino-self.posicion):

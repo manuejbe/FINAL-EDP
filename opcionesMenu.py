@@ -2,7 +2,6 @@ from auxiliares import *
 from clases.Ruta import *
 from clases.Router import *
 from clases.RoutingSim import *
-from tasa import *
 from clases.Paquete import Paquete
 
 
@@ -66,6 +65,6 @@ async def simularRuta(ruta: Ruta):
 
     routingSim=RoutingSim(tiempoSimulacion, ruta, paquetes)
     await routingSim.simular()
-    tasaPaquetes(routingSim)
+    return routingSim
     
    

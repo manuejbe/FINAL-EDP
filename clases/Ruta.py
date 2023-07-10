@@ -34,7 +34,7 @@ class Ruta:
         return None
 
     def inicializarRutaRandom (self):
-        cantidadRouters = random.randint(5,10)
+        cantidadRouters = random.randint(30,45)
         for i in range(cantidadRouters):
             router = Router(i+1)
             self.agregarRouter(router)
