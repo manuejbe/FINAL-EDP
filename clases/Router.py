@@ -6,8 +6,7 @@ import auxiliares as aux
 import asyncio
 from clases.Cola import Cola
 import os
-##un router puede tener muchos paquetes, tiene que tener una lista de paquetes y que lo appendee
-##hay que hacer que se borre el paquete si no es el nodo de origen
+
 class Router:
     def __init__(self, posicion, estado="ACTIVO"):
         self.posicion = posicion
@@ -22,27 +21,32 @@ class Router:
         self.paquetesRecibidos = 0
         self.contPaquetesOriginados = 0
 
+    #metodo para activar el router
     def activar(self):
         self.estado = "ACTIVO"
         aux.escribirEnLog("ACTIVADO", self.posicion)
 
+    #metodo para desactivar el router
     def desactivar(self):
         self.estado = "INACTIVO"
         aux.escribirEnLog("INACTIVO", self.posicion)
 
+    #metodo para averiar el router (se usa al crearse una ruta aleatoria)
     def averiar(self):
         self.estado = "AVERIADO"
 
+    #metodo para recibir el paquete
     async def recibir_paquete(self, paquete):
         self.paquetesRecibidos += 1
+        #chequea si el paquete no tiene como destino u origen el router actual
         if paquete.destino != self.posicion and paquete.origen != self.posicion:
             print(f"El paquete ({paquete.contenido}) llegó al router {self.posicion}", datetime.now())
             self.paquetesRetrans.encolar(paquete)
-
+        #chequea si el paquete tiene como origen el router actual
         if paquete.origen == self.posicion:
             print(f"El paquete ({paquete.contenido}) se originó en el router {self.posicion}", datetime.now())
             self.paquetesOriginados.encolar(paquete)
-
+        #chequea si el paquete tiene como destino el router actual
         if paquete.destino == self.posicion:
             print(f"El paquete ({paquete.contenido}) llegó a su destino", datetime.now())
             self.paquetesDestinados.append(paquete)
@@ -56,7 +60,7 @@ class Router:
                 file.write('\n')
                 
 
-        
+        #validacion para otorgarle prioridad a los paquetes que tiene que retransmitir el router por sobre los originados en el
         while not self.paquetesRetrans.esta_vacia():
             if (not self.paquetesRetrans.esta_vacia()):
                 await self.enviar_paquete_siguiente(self.paquetesRetrans.desencolar())
@@ -64,7 +68,8 @@ class Router:
             self.contPaquetesOriginados += 1
             self.paquetesRecibidos -= 1
             await self.enviar_paquete_siguiente(self.paquetesOriginados.desencolar())
-                
+
+    #metodo para enviar el paquete al siguiente router         
     async def enviar_paquete_siguiente(self, paquete):
         try:
             await asyncio.sleep(0.1)
@@ -84,16 +89,19 @@ class Router:
                         case "AVERIADO":
                             routerActual = routerActual.siguiente
                             asyncio.create_task(routerActual.reset())
-                     
+
+    #metodo para resetear el router         
     async def reset(self):
         aux.escribirEnLog("EN_RESET", self.posicion)
         await asyncio.sleep(randint(5,10))
         self.activar()
 
+    #metodo para obtener el estado del router siguiente
     def estadoSiguiente(self):
         e = self.siguiente.estado
         return e
-            
+    
+
     def tick(self):
         if self.tiempo_latencia > 0:
             self.tiempo_latencia -= 1

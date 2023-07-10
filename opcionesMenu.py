@@ -42,7 +42,6 @@ def mostrarRuta(ruta: Ruta):
         print(ruta)
 
 #funcion para simular la ruta (se le pide al usuario un tiempo de simulacion y una cantidad de paquetes a enviar con sus respectivos datos)
-
 async def simularRuta(ruta: Ruta):
     tiempoSimulacion=verificarNumeroInput("Ingrese el tiempo de simulacion en segundos: ")
     while tiempoSimulacion < 0:

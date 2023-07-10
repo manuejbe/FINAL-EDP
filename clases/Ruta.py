@@ -11,7 +11,7 @@ class Ruta:
         self.head = None
         self.len = 0 
 
-
+    #metodo para agregar un router a la ruta
     def agregarRouter(self, router: Router):
         if self.head == None:
             self.head = router
@@ -25,6 +25,7 @@ class Ruta:
             writer = csv.writer(csvfile)
             writer.writerow(["ROUTER_"+str(router.posicion), datetime.now(), "AGREGADO"])
 
+    #metodo para acceder a un router de la ruta
     def accederNodo(self, numeroRouter):
         nodoActual = self.head
         while nodoActual != None:
@@ -33,6 +34,7 @@ class Ruta:
             nodoActual = nodoActual.siguiente
         return None
 
+    #metodo para inicializar una ruta random
     def inicializarRutaRandom (self):
         cantidadRouters = random.randint(30,45)
         for i in range(cantidadRouters):
@@ -49,6 +51,7 @@ class Ruta:
                 router.averiar()
             router = router.siguiente
 
+    #metodo para crear txts vacios (1 para cada router)
     def crearTxts(self):
         carpeta = 'archivosTxts'
         for i in range(self.len):
@@ -58,6 +61,7 @@ class Ruta:
             archivo.write("")
             archivo.close()
 
+    #metodo para mostrar la ruta
     def __str__(self):
         router = self.head
         if self.len == 0:

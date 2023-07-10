@@ -8,12 +8,12 @@ class RoutingSim:
 
 
     async def simular(self):
-        
         nodo = self.ruta.head
         tasks = []
         for p in self.paquetes:
             while (nodo.posicion != p.origen):
                 nodo = nodo.siguiente
+            #chequea si el nodo de origen esta activo porque sino no puede comenzar el envio del paquete
             if nodo.estado == "ACTIVO":
                 task = asyncio.create_task(nodo.recibir_paquete(p))
                 tasks.append(task)

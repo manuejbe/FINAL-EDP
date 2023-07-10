@@ -8,9 +8,7 @@ def graficar(ruta):
     for i in range(cantrouters):
         routers.append("Router "+str(i+1))
 
-    #los retransmitidos son los recibidos - los destinados
-
-
+    #las 2 lista declaradas aca abajo van a tener numeros en cada posicion que representan la cantidad de paquetes enviados y recibidos por cada router
     paquetes_enviados = []
     paquetes_recibidos = []
 
