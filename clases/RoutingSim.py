@@ -29,4 +29,4 @@ class RoutingSim:
         for i in range(len(tasks)):
             if not tasks[i].done(): 
                 tasks[i].cancel()
-        print("* * * \n LA SIMULACION HA TERMINADO ABRUPTAMENTE, SE HA SUPERADO EL TIEMPO DE SIMULACION\n * * *")
+        print("* * * \n LA SIMULACION HA TERMINADO ABRUPTAMENTE, SE HA SUPERADO EL TIEMPO DE SIMULACION\n* * *")
