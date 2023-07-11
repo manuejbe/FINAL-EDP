@@ -34,3 +34,9 @@ def verificarNumeroInput(texto1):
         except ValueError:
             print("Ingreso invalido. Por favor, inténtelo de nuevo.")
     return varInt
+
+def verificarArrayTrue(array):
+    for i in array:
+        if i==False:
+            return False
+    return True
